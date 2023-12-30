@@ -18,10 +18,10 @@ public class CanvasTool : EditorPlugin
         {
             Name = "Canvas Tool",
             Category = "Canvas",
-            Author = "IceCold",
+            Author = "IceCold328",
             AuthorUrl = null,
             HomepageUrl = null,
-            RepositoryUrl = "",
+            RepositoryUrl = "https://github.com/icecold328/CanvasTool",
             Description = "Canvas Tooling, Helps Quickly change all elements of a canvas.",
             Version = new Version(1, 0, 0),
             IsAlpha = false,
