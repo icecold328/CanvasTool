@@ -8,6 +8,5 @@ public class CanvasToolTarget : GameProjectTarget
         base.Init();
 
         // Reference the modules for game
-        Modules.Add("CanvasTool");
     }
 }
