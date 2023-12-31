@@ -1,5 +1,6 @@
 ﻿using Flax.Build;
 
+/// <inheritdoc />
 public class CanvasToolTarget : GameProjectTarget
 {
     /// <inheritdoc />

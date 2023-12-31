@@ -1,4 +1,7 @@
 using System;
+
+#if FLAX_EDITOR
+
 using FlaxEditor;
 using FlaxEditor.GUI.ContextMenu;
 using FlaxEditor.GUI;
@@ -63,3 +66,4 @@ public class CanvasTool : EditorPlugin
         base.DeinitializeEditor();
     }
 }
+#endif

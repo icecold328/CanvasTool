@@ -1,4 +1,6 @@
-﻿using FlaxEditor.CustomEditors.Elements;
+﻿#if FLAX_EDITOR
+
+using FlaxEditor.CustomEditors.Elements;
 using FlaxEditor.CustomEditors;
 using FlaxEditor.GUI.Input;
 using FlaxEditor.GUI;
@@ -9,6 +11,9 @@ using System.Collections.Generic;
 
 namespace CanvasTool;
 
+/// <summary>
+/// Canvas Tools Window.
+/// </summary>
 public class CanvasToolsWindow : CustomEditorWindow
 {
     UICanvas[] AvailableCanvas { get; set; }
@@ -133,6 +138,7 @@ public class CanvasToolsWindow : CustomEditorWindow
         CheckBoxBaseColor = BaseColor;
         CheckBoxHighColor = HighLightedColor;
     }
+    /// <inheritdoc />
     public override void Initialize(LayoutElementsContainer layout)
     {
         if (Window is null)
@@ -1228,3 +1234,4 @@ public class CanvasToolsWindow : CustomEditorWindow
     }
 }
 
+#endif

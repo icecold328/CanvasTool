@@ -1,6 +1,7 @@
 using Flax.Build;
 using Flax.Build.NativeCpp;
 
+/// <inheritdoc />
 public class CanvasToolEditor : GameEditorModule
 {
     /// <inheritdoc />
@@ -9,7 +10,7 @@ public class CanvasToolEditor : GameEditorModule
         base.Setup(options);
 
         // Reference game source module to access game code types
-        options.PublicDependencies.Add("CanvasTool");
+        //options.PublicDependencies.Add("CanvasTool");
 
         // Here you can modify the build options for your game editor module
         // To reference another module use: options.PublicDependencies.Add("Audio");
