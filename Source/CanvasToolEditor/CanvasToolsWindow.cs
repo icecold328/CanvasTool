@@ -8,6 +8,7 @@ using FlaxEditor;
 using FlaxEngine.GUI;
 using FlaxEngine;
 using System.Collections.Generic;
+using System;
 
 namespace CanvasTool;
 
@@ -849,7 +850,7 @@ public class CanvasToolsWindow : CustomEditorWindow
 
         if (ChangingAllCanvas)
         {
-            SelectedCanvascontrols = Level.GetActors<UIControl>();
+            GetAllCanvasUI();
         }
 
         fontsUpdatedCounter = 0;
@@ -862,6 +863,18 @@ public class CanvasToolsWindow : CustomEditorWindow
         UpdateCanvasData();
 
     }
+
+    private void GetAllCanvasUI()
+    {
+        List<UIControl> AllControls = new List<UIControl>();
+
+        for (int i = 0; i < AvailableCanvas.Length; i++)
+        {
+            AllControls.AddRange(GetAllChildren<UIControl>(AvailableCanvas[i]));
+        }
+        SelectedCanvascontrols = AllControls.ToArray();
+    }
+
     void UpdateCanvasData()
     {
         for (int i = 0; i < SelectedCanvascontrols.Length; i++)
@@ -1203,19 +1216,52 @@ public class CanvasToolsWindow : CustomEditorWindow
     {
         DisplayInfo.Label.Text = $"Information : \n{message}";
     }
-    private void PopulateUIControlForCanvas(ComboBox obj)
-    {
-        var allControls = Level.GetActors<UIControl>();
-        List<UIControl> CanvasBasedControls = new List<UIControl>();
 
-        for (int i = 0; i < allControls.Length; i++)
+    /// <summary>
+    /// Get all Children (Enabled/Disabled) objects of Type T from Root Input Node.    
+    /// </summary>
+    /// <typeparam name="T">Type of Children To Look For</typeparam>
+    /// <param name="Root">Starting Point for Children Search</param>
+    /// <returns>All Available Children of Type T</returns>
+    public T[] GetAllChildren<T>(Actor Root) where T : Actor
+    {
+        int childrenCount = Root.ChildrenCount;        
+        if (childrenCount == 0)
         {
-            if (allControls[i].Control.Root == AvailableCanvas[obj.SelectedIndex].GUI.Root)
+            return Utils.GetEmptyArray<T>();
+        }
+       
+        //Add First Children Objects to the Checking List.
+        List<T> ToCheckChildren = new List<T>();
+        ToCheckChildren.AddRange(Root.GetChildren<T>());
+
+        //Add the Objects to the Child List.
+        List<T> AquiredChildren = new List<T>();
+        AquiredChildren.AddRange(Root.GetChildren<T>());
+
+        //Keep Going until we have no children left.
+        while (ToCheckChildren.Count > 0)
+        {
+            //If the Object we are Currently Checking has no Children, Remove from List and Continue.
+            if (ToCheckChildren[0].ChildrenCount == 0)
             {
-                CanvasBasedControls.Add(allControls[i]);
+                ToCheckChildren.RemoveAt(0);
+                continue;
+            }
+            else
+            {
+                //Else Add the Children to Both List's and Remove the Currently Checked one.
+                AquiredChildren.AddRange(ToCheckChildren[0].GetChildren<T>());
+                ToCheckChildren.AddRange(ToCheckChildren[0].GetChildren<T>());
+                ToCheckChildren.RemoveAt(0);
             }
         }
-        SelectedCanvascontrols = CanvasBasedControls.ToArray();
+        return AquiredChildren.ToArray();
+    }
+
+    private void PopulateUIControlForCanvas(ComboBox obj)
+    {
+        SelectedCanvascontrols = GetAllChildren<UIControl>(AvailableCanvas[obj.SelectedIndex]);
     }
     void PopulateCanvasBox(ComboBoxElement box)
     {
